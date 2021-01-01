@@ -1,0 +1,47 @@
+<%- contentFor('content') %>
+    <h1><%= title %> </h1>
+    <hr>
+    <form  action="" method="POST">
+        <div class="container-fluid">
+            <% if (!roles.length) { %>
+                <div class="alert alert-warning" role="alert">
+                    You don't have any roles to use!
+                </div>
+            <% } %>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter a username" required> 
+                        <div class="form-text text-danger">This field is required.</div>
+                      </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="roles" class="form-label">Select a role</label>
+                        <select class="form-select" id="roles" name="roles" required>
+                            <option value="0" selected>Select a role</option>
+                            <% roles.forEach(role => { %>
+                                <option value=<%- role.name %>  ></option>
+                            <% }) %> 
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password" required>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm the password" required>
+
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>

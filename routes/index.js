@@ -3,6 +3,13 @@ const router = express.Router();
 
 const indexController = require('../controllers/indexController')
 
+const { esureAuthenticated } = require('../configs/passport/auth')
+
+const passport = require('passport')
+const bcrypt = require('bcryptjs');
+
+const User = require('../models/users/User')
+const Role = require('../models/users/Role')
 
 // -GET- request to --> '/'
 router.get('/', indexController.index);

@@ -10,7 +10,7 @@ const layout = 'layouts/main_layout'
 // @route   GET - '/'.
 // @desc    Renders home page.
 exports.index = (req, res, next) => {
-    res.render('index', { title: 'Express', layout: layout, user: "Arshia" });
+    res.render('index', { title: 'Express'});
 }
 
 

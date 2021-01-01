@@ -1,8 +1,10 @@
 const User = require('../models/users/User')
 const Role = require('../models/users/Role')
+const async = require('async')
+
+const { body, validationResult } = require('express-validator');
 
 const layout = 'layouts/main_layout' 
-
 
 // <-----|| 'LIST', 'DETAIL' ||-----> //
 
@@ -26,12 +28,20 @@ exports.users_detail = (req, res, next) => {
 // @route   GET - '/users/create'.
 // @desc    Render user create page.
 exports.create_user_get = (req, res, next) => {
-    res.send("NOT IMPLEMENTED")
+    async.parallel({
+        roles: (callback) => {
+            Role.find().exec(callback)
+        }
+    }, (err, results) => {
+        if (err) { return next(err) }
+        res.render("create_user_form", { title: "Create A New User", roles: results.roles })
+    })
 }
 // @route   POST - '/users/create'.
 // @desc    Handle user create form.
 exports.create_user_post = (req, res, next) => {
-    // Do something..
+    console.log("req.body : ", req.body)
+    res.send(req.body)
 }
 
 // @route   GET - '/users/:id/edit'.

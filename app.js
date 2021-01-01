@@ -1,15 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
+const session = require('express-session')
 
-
-var app = express();
+const app = express();
 
 // Config .env variables
 require('dotenv').config({ path: path.join(__dirname, 'configs/.env') })
+
+// Config passport.
+const passport = require('passport')
+require('./configs/passport/passport')(passport)
 
 // Set up mongoose connection
 let mongoose = require('mongoose')
@@ -24,6 +28,8 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, use
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.set('layout', 'layouts/main_layout');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,6 +37,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Init express-ejs-layouts
 app.use(expressLayouts);
+// Express session
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}))
+// Passport middleware.
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // Routes

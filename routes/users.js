@@ -2,19 +2,25 @@ const express = require('express');
 const router = express.Router();
 
 const usersController = require("../controllers/usersController")
+const { esureAuthenticated } = require('../configs/passport/auth')
+const passport = require('passport')
+const bcrypt = require('bcryptjs');
+
+const User = require('../models/users/User')
+const Role = require('../models/users/Role')
 
 
 // -GET- request to --> '/users'
 router.get('/', usersController.users_list);
-
-// -GET- request to --> '/users/:id'
-router.get('/:id', usersController.users_detail);
 
 // -GET- request to --> '/users/create'
 router.get('/create', usersController.create_user_get);
 
 // -POST- request to --> '/users/create'
 router.post('/create', usersController.create_user_post);
+
+// -GET- request to --> '/users/:id'
+router.get('/:id', usersController.users_detail);
 
 // -GET- request to --> '/users/:id/edit'
 router.get('/:id/edit', usersController.edit_user_get);

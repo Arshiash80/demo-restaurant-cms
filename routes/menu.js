@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const menuController = require('../controllers/menuController')
+const { esureAuthenticated } = require('../configs/passport/auth')
 
 // -----------------------------------------------------------------------
 // ========= MENU ITEMS =========

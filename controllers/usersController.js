@@ -55,3 +55,57 @@ exports.delete_user_get = (req, res, next) => {
 exports.delete_user_post = (req, res, next) => {
     // Do something..
 }
+
+// -----------------------------------------------
+// ======= USERS ROLE =======
+// -----------------------------------------------
+
+
+// @route   GET - '/users/roles'.
+// @desc    List all roles.
+exports.userRole_list = (req, res, next) => {
+    res.send("NOT IMPLEMENTED")
+}
+
+// @route   GET - '/users/role/:id'.
+// @desc    Render a detail page for specific role.
+exports.userRole_detail = (req, res, next) => {
+    res.send("NOT IMPLEMENTED")
+}
+
+
+// <-----|| 'CREATE', 'EDIT', 'DELETE' ||-----> //
+
+
+// @route   GET - '/users/role/create'.
+// @desc    Render role create page.
+exports.create_userRole_get = (req, res, next) => {
+    res.send("NOT IMPLEMENTED")
+}
+// @route   POST - '/users/role/create'.
+// @desc    Handle role create form.
+exports.create_userRole_post = (req, res, next) => {
+    // Do something..
+}
+
+// @route   GET - '/users/role/:id/edit'.
+// @desc    Render role edit page.
+exports.edit_userRole_get = (req, res, next) => {
+    res.send("NOT IMPLEMENTED")
+}
+// @route   POST - '/users/role/:id/edit'.
+// @desc    Handle role edit form.
+exports.edit_userRole_post = (req, res, next) => {
+    // Do something..
+}
+
+// @route   GET - '/users/role/:id/delete'.
+// @desc    Render role delete page.
+exports.delete_userRole_get = (req, res, next) => {
+    res.send("NOT IMPLEMENTED")
+}
+// @route   POST - '/users/role/:id/delete'.
+// @desc    Handle role delete form.
+exports.delete_userRole_post = (req, res, next) => {
+    // Do something..
+}

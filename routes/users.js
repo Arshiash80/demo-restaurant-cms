@@ -29,5 +29,33 @@ router.get('/:id/delete', usersController.delete_user_get);
 router.post('/:id/delete', usersController.delete_user_post);
 
 
+// -----------------------------------------------
+// ======= USERS ROLE =======
+// -----------------------------------------------
+
+// -GET- request to --> '/users/roles'
+router.get('/roles', usersController.userRole_list);
+
+// -GET- request to --> '/users/role/:id'
+router.get('/role/:id', usersController.userRole_detail);
+
+// -GET- request to --> '/users/role/create'
+router.get('/role/create', usersController.create_userRole_get);
+
+// -POST- request to --> '/users/role/create'
+router.post('/role/create', usersController.create_userRole_post);
+
+// -GET- request to --> '/users/role/:id/edit'
+router.get('/role/:id/edit', usersController.edit_userRole_get);
+
+// -POST- request to --> '/users/role/:id/edit'
+router.post('/role/:id/edit', usersController.edit_userRole_post);
+
+// -GET- request to --> '/users/role/:id/delete'
+router.get('/role/:id/delete', usersController.delete_userRole_get);
+
+// -POST- request to --> '/users/role/:id/delete'
+router.post('/role/:id/delete', usersController.delete_userRole_post);
+
 
 module.exports = router;

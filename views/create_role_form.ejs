@@ -1,0 +1,65 @@
+<%- contentFor('content') %>
+    <h1><%= title %></h1>
+    <hr>
+    <form  action="" method="POST">
+        <div class="container-fluid">
+            <%- include('./includes/errorMessage.ejs')%>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Role Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Role Name" required>
+                        <div class="form-text">Create a unique role name.</div>
+                      </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Select Menu Permissions</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="create" id="menuCreate" name="menuPermission[]" checked>
+                            <label class="form-check-label" for="menuCreate">
+                              Create
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="delete" id="menuDelete" name="menuPermission[]">
+                            <label class="form-check-label" for="menuDelete">
+                                Delete
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="update" id="menuUpdate" name="menuPermission[]">
+                            <label class="form-check-label" for="menuUpdate">
+                                Update
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Select User Permissions</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="create" id="userCreate" name="userPermission[]">
+                            <label class="form-check-label" for="userCreate">
+                              Create
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="delete" id="userDelete" name="userPermission[]">
+                            <label class="form-check-label" for="userDelete">
+                                Delete
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="update" id="userUpdate" name="userPermission[]">
+                            <label class="form-check-label" for="userUpdate">
+                                Update
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create A Role</button>
+        </div>
+    </form>

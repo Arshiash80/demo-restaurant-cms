@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const RoleSchema = new Schema({
     name: { type: String, required: true, unique: true },
-    permissions: { type: String, enum: ['create', 'delete', 'update', 'admin'], required: true },
+    menu_permissions: [{ type: String, enum: ['create', 'delete', 'update', 'none'], required: true }],
+    user_permissions: [{ type: String, enum: ['create', 'delete', 'update', 'none'], required: true }]
 })
 RoleSchema
     .virtual('url')

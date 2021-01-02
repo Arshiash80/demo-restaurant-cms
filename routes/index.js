@@ -12,7 +12,7 @@ const User = require('../models/users/User')
 const Role = require('../models/users/Role')
 
 // -GET- request to --> '/'
-router.get('/', indexController.index);
+router.get('/', esureAuthenticated,indexController.index);
 
 // -GET- request to --> '/login'
 router.get('/login', indexController.login_get);
@@ -21,10 +21,8 @@ router.get('/login', indexController.login_get);
 router.post('/login', indexController.login_post);
 
 // -GET- request to --> '/logout'
-router.get('/logout', indexController.logout_get);
+router.get('/logout', esureAuthenticated,indexController.logout_get);
 
-// -POST- request to --> '/logout'
-router.post('/logout', indexController.logout_post);
 
 
 

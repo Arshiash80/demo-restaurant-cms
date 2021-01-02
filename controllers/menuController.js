@@ -6,6 +6,11 @@ const Role = require('../models/users/Role')
 
 const layout = 'layouts/main_layout' 
 
+function currentUser(req, res)  {
+    return req.user || { username: "ANONIM" }
+} 
+
+
 // -----------------------------------------------------------------------
 // ========= MENU ITEMS =========
 // *****************************

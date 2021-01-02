@@ -3,6 +3,7 @@
     <hr>
     <form  action="" method="POST">
         <div class="container-fluid">
+            <%- include('./includes/errorMessage.ejs')%>
             <% if (!roles.length) { %>
                 <div class="alert alert-warning" role="alert">
                     You don't have any roles to use!
@@ -12,17 +13,17 @@
                 <div class="col-12 col-md-6">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter a username" required> 
-                        <div class="form-text text-danger">This field is required.</div>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter a username" required>
+                        <div class="form-text">Username will be seen by other users</div>
                       </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="mb-3">
-                        <label for="roles" class="form-label">Select a role</label>
-                        <select class="form-select" id="roles" name="roles" required>
+                        <label for="role" class="form-label">Select a role</label>
+                        <select class="form-select" id="role" name="role" required>
                             <option value="0" selected>Select a role</option>
                             <% roles.forEach(role => { %>
-                                <option value=<%- role.name %>  ></option>
+                                <option value=<%= role._id %> > <%= role.name %> </option>
                             <% }) %> 
                         </select>
                     </div>
@@ -42,6 +43,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Create A Role</button>
         </div>
-      </form>
+    </form>
+        

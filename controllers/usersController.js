@@ -8,12 +8,22 @@ const { body, validationResult } = require('express-validator');
 
 // <-----|| 'LIST', 'DETAIL' ||-----> //
 
-
 // @route   GET - '/users'.
 // @desc    List all users.
 exports.users_list = (req, res, next) => {
-    // TODO: Create this route.
-    res.send("NOT IMPLEMENTED")
+    function compare( a, b ) {
+        if ( a.role.name < b.role.name ){
+          return -1;
+        }
+        if ( a.role.name > b.role.name ){
+          return 1;
+        }
+        return 0;
+    }
+    
+    User.find().populate('role').exec((err, users) => {
+        res.render("users_list", { users: users.sort(compare) })
+    })
 }
 
 // @route   GET - '/users/:id'.

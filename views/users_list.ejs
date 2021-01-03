@@ -1,0 +1,52 @@
+<%- contentFor("content") %> 
+    <h1>All Users</h1>
+    <hr>
+    <div class="container-fluid my-3">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <% if (users) { %>
+                    <p class="fs-5"><%- users.length %> Users found. </p>
+                <% } else {%> 
+                    <p class="fs-5 text-danger">No users created.</p>     
+                <% } %> 
+            </div>
+            <div class="col-12 col-md-6">
+                <form action="/users/search" method="POST">
+                    <div class="row">
+                        
+                            <div class="col-6">
+                                <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-success" type="submit">Search</button> 
+                            </div>
+                    
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+      
+    <% users.sort(function(a, b){return a - b}).forEach(user => { %>
+        <div class="card mb-2">
+            <div class="card-header">
+                <%= user.role.name %>
+              </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <h5 class="card-title"><%= user.username %></h5>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <a href=<%- user.url %> class="btn btn-primary">Detail</a>
+                            <a href="<%- user.url %>/edit" class="btn btn-primary">Edit</a>
+                            <a href="<%- user.url %>/delete" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>  
+    <% }) %>

@@ -13,26 +13,26 @@ const permit = require('../middlewares/authorization')
 // -GET- request to --> '/menu/items'
 router.get('/items/', esureAuthenticated,menuController.menuItem_list)
 
-// -GET- request to --> '/menu/item/:id'
-router.get('/item/:id', esureAuthenticated,menuController.menuItem_detail)
-
 // -GET- request to --> '/menu/item/create'
 router.get('/item/create', permit("create", null),esureAuthenticated,menuController.create_menuItem_get)
 
 // -POST- request to --> '/menu/item/create'
 router.post('/item/create',  permit("create", null),esureAuthenticated,menuController.create_menuItem_post)
 
-// -GET- request to --> '/menu/item/update'
+// -GET- request to --> '/menu/item/:id/update'
 router.get('/item/:id/update',  permit("update", null),esureAuthenticated,menuController.update_menuItem_get)
 
-// -POST- request to --> '/menu/item/update'
+// -POST- request to --> '/menu/item/:id/update'
 router.post('/item/:id/update',  permit("update", null),esureAuthenticated,menuController.update_menuItem_post)
 
-// -GET- request to --> '/menu/item/delete'
+// -GET- request to --> '/menu/item/:id/delete'
 router.get('/item/:id/delete',  permit("delete", null),esureAuthenticated,menuController.delete_menuItem_get)
 
-// -POST- request to --> '/menu/item/delete'
+// -POST- request to --> '/menu/item/:id/delete'
 router.post('/item/:id/delete',  permit("delete", null),esureAuthenticated,menuController.delete_menuItem_post)
+
+// -GET- request to --> '/menu/item/:id'
+router.get('/item/:id', esureAuthenticated,menuController.menuItem_detail)
 
 // -----------------------------------------------------------------------
 // ========= MENU CATEGORIES =========

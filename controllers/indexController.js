@@ -14,8 +14,7 @@ const passport = require('passport')
 // @route   GET - '/'.
 // @desc    Renders home page.
 exports.index = (req, res, next) => {
-    console.log("---------------",currentUser)
-    res.render('index');
+    res.render('index', {});
 }
 
 

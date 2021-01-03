@@ -43,9 +43,9 @@ app.use(expressLayouts);
 // Express session
 app.use(session({
   secret: 'secret',
-  resave: true,
-  saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  resave: false, // t
+  saveUninitialized: true, 
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // Equals to 1 day. 
 }))
 // Passport middleware.
 app.use(passport.initialize());
@@ -54,12 +54,12 @@ app.use(passport.session());
 // TODO: use this middleware to show contents according to users permissions.
 // Current User Middleware.
 const User = require('./models/users/User')
-app.use( async function(req,res,next){ // This middleware shows the current user for every request.
+app.use(async function(req,res,next){ // This middleware shows the current user for every request.
   if (req.user) {
     await User.findById(req.user.id)
     .populate('role') // Populate users roles
     .exec(function(err, currentUser) {
-      global.currentUser = currentUser || { username: "ANONIM" };   
+      global.currentUser = currentUser;   
     })
   }
   next();

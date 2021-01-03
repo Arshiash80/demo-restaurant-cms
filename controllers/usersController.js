@@ -6,22 +6,20 @@ const bcrypt = require('bcryptjs');
 
 const { body, validationResult } = require('express-validator');
 
-function currentUser(req, res)  {
-    return req.user || { username: "ANONIM" }
-} 
-
 // <-----|| 'LIST', 'DETAIL' ||-----> //
 
 
 // @route   GET - '/users'.
 // @desc    List all users.
 exports.users_list = (req, res, next) => {
+    // TODO: Create this route.
     res.send("NOT IMPLEMENTED")
 }
 
 // @route   GET - '/users/:id'.
 // @desc    Render a detail page for specific user.
 exports.users_detail = (req, res, next) => {
+    // TODO: Create this route.
     res.send("NOT IMPLEMENTED")
 }
 
@@ -168,12 +166,14 @@ exports.delete_user_post = (req, res, next) => {
 // @route   GET - '/users/roles'.
 // @desc    List all roles.
 exports.userRole_list = (req, res, next) => {
+    // TODO: Create this route.
     res.send("NOT IMPLEMENTED")
 }
 
 // @route   GET - '/users/role/:id'.
 // @desc    Render a detail page for specific role.
 exports.userRole_detail = (req, res, next) => {
+    // TODO: Create this route.
     res.send("NOT IMPLEMENTED")
 }
 
@@ -212,8 +212,10 @@ exports.create_userRole_post = [
             // There is no error. Data from form is valid.
             let newRole = new Role({
                 name: req.body.name,
-                menu_permissions: req.body.menuPermission,
-                user_permissions: req.body.userPermission
+                permissions: {
+                    menu_permissions: req.body.menuPermission,
+                    user_permissions: req.body.userPermission
+                }
             })
             Role.findOne({ name: newRole.name })
                 .then(result => {

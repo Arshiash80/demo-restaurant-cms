@@ -10,15 +10,12 @@ const { body, validationResult } = require('express-validator');
 
 const passport = require('passport')
 
-function currentUser(req, res)  {
-    return req.user || { username: "ANONIM" }
-} 
-
 
 // @route   GET - '/'.
 // @desc    Renders home page.
 exports.index = (req, res, next) => {
-    res.render('index', { currentUser: currentUser(req)});
+    console.log("---------------",currentUser)
+    res.render('index');
 }
 
 

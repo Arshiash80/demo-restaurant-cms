@@ -51,6 +51,20 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// TODO: use this middleware to show contents according to users permissions.
+// Current User Middleware.
+const User = require('./models/users/User')
+app.use( async function(req,res,next){ // This middleware shows the current user for every request.
+  if (req.user) {
+    await User.findById(req.user.id)
+    .populate('role') // Populate users roles
+    .exec(function(err, currentUser) {
+      global.currentUser = currentUser || { username: "ANONIM" };   
+    })
+  }
+  next();
+});
+
 // Connect flash
 app.use(flash());
 // Global vars

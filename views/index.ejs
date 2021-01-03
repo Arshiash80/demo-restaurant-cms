@@ -1,5 +1,5 @@
 <%- contentFor('content') %>
-  <h2>Hello "<%= currentUser.username %>" . <br> Welcome to "<samp><a href="/">Demo Restaurant Website</a></samp>" CMS</h2>
+  <h2>Hello "<span class="text-danger"><%= currentUser.username %></span>". <br> Welcome to "<samp><a href="/">Demo Restaurant Website</a></samp>" CMS</h2>
   <hr>
   <div class="container-fluid">
     <%- include('./includes/errorMessage.ejs')%>

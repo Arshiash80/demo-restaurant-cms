@@ -1,0 +1,28 @@
+<%- contentFor('content') %> 
+    <h1><%= title %> : -<%- user.username %> </h1>
+    <hr>
+    <div class="alert alert-danger" role="alert">
+        <h4>Yo are about to delete - <span class="text-danger fw-bold"><%- user.username %></span> !!</h4>
+        
+        <div class="card mb-2 my-4">
+            <div class="card-header fw-bold">
+                <%= user.role.name %>
+              </div>
+            <div class="card-body bg-warning">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-12 col-md-6">
+                            <a href="<%- user.url %>" class="card-title text-danger fw-bold"><%= user.username %></a>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+
+        <p class="my-4 fw-bold">Are you sure about that ?</p>
+        <form action="" method="POST">
+            <button class="btn btn-danger" type="submit">Delete - <%- user.username %> </button>
+            <a href= <%- user.url %> class="btn btn-primary">Cancel</a>
+        </form>
+    </div>

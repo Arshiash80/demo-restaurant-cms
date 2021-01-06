@@ -31,9 +31,15 @@
       
     <% users.sort(function(a, b){return a - b}).forEach(user => { %>
         <div class="card mb-2">
-            <div class="card-header fw-bold">
-                <%= user.role.name %>
-              </div>
+            <% if (user.role.permissions.menu_permissions.length === 3 && user.role.permissions.user_permissions.length === 3) { %>
+                <div class="card-header fw-bold bg-warning">
+                    <%= user.role.name %>
+                </div>
+            <% } else { %>
+                <div class="card-header fw-bold">
+                    <%= user.role.name %>
+                </div>
+            <% } %>
             <div class="card-body">
                 <div class="container-fluid">
                     <div class="row ">

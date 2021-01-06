@@ -1,0 +1,25 @@
+<%- contentFor('content') %> 
+    <h1><%= title %></h1>
+    <hr>
+    <div class="container-fluid">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <% roles.forEach(role => { %>
+                    <% if (role.permissions.menu_permissions.length === 3 && role.permissions.user_permissions.length === 3) { %>
+                        <li class="list-group-item bg-warning">
+                            <a href=<%- role.url %>  class="d-inline-block fw-bold"><%= role.name %></a>
+                            <a href=<%- role.url + "/delete "%>  class="btn btn-danger float-end">Delete</a>
+                            <a href=<%- role.url + "/edit" %>  class="btn btn-primary float-end mx-2">Edit</a>
+                        </li>
+                    <% } else { %>
+                        <li class="list-group-item">
+                            <a href=<%- role.url %>  class="d-inline-block fw-bold"><%= role.name %></a>
+                            <a href=<%- role.url + "/delete "%>  class="btn btn-danger float-end">Delete</a>
+                            <a href=<%- role.url + "/edit" %>  class="btn btn-primary float-end mx-2">Edit</a>
+                        </li>
+                    <% } %>  
+                <% }) %>  
+            </ul>
+        </div>        
+    </div>
+    

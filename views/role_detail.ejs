@@ -1,0 +1,47 @@
+<%- contentFor('content') %> 
+    <h1><%= title %>: -<%= role.name %></h1>
+    <hr>
+    <%- include('./includes/errorMessage.ejs')%>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 col-12">
+                <h4>Role Permissions</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Menu Permissions</h5>
+                        <hr>
+                        <% role.permissions.menu_permissions.forEach(permission => { %>
+                            <p><%- permission %> </p>
+                        <% }) %>
+                    </div>
+                    <div class="col-6">
+                        <h5>User Permissions</h5>
+                        <hr>
+                        <% role.permissions.user_permissions.forEach(permission => { %>
+                            <p><%- permission %> </p>
+                        <% }) %>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-7 col-12">
+                <h4>Users with role <%= role.name %> </h4>
+                <hr>
+                <% if (!users.length) { %>
+                    <div class="alert alert-warning" role="alert">
+                        <span class='fw-bold'>No users assigned to this role.</span>
+                    </div>
+                    <a href="/users/create" class="btn btn-primary my-3">Create Users For This Role</a>
+                <% } %>
+                <% users.forEach(user => { %>
+                    <p class="fw-bold"><a href=<%- user.url %>><%= user.username %></a></p>
+                <% }) %>
+            </div>
+        </div>
+        <hr>
+        <a href=<%- role.url + "/edit" %> class="btn btn-primary">Edit Role Details</a>
+        <a href=<%- role.url + "/delete" %> class="btn btn-danger">Delete Role</a>
+    </div>
+    
+    

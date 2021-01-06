@@ -1,5 +1,5 @@
 <%- contentFor('content') %>
-  <h2>Hello "<span class="text-danger"><%= currentUser.username %></span>". <br> Welcome to "<samp><a href="/">Demo Restaurant Website</a></samp>" CMS</h2>
+  <h2>Hello "<span class="text-danger"><%= user %></span>". <br> Welcome to "<samp><a href="/">Demo Restaurant Website</a></samp>" CMS</h2>
   <hr>
   <div class="container-fluid">
     <%- include('./includes/errorMessage.ejs')%>
@@ -8,7 +8,7 @@
       <div class="col">
         <a href="/users"><%- users %>  Users</a>
         <br>
-        <a href="#"><%- roles %> Roles</a>
+        <a href="/users/roles"><%- roles %> Roles</a>
       </div>
       <div class="col">
         <a href="/menu/items"><%- menuItems %> Menu Items</a>

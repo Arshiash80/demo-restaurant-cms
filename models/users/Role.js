@@ -11,7 +11,7 @@ const RoleSchema = new Schema({
 RoleSchema
     .virtual('url')
     .get(function() {
-        return '/role/' + this._id
+        return '/users/role/' + this._id
 })
 
 module.exports = mongoose.model("Role", RoleSchema)

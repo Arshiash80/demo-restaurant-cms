@@ -158,23 +158,28 @@ exports.create_user_post = [
 // @desc    Render user edit page.
 exports.edit_user_get = (req, res, next) => {
     const id = req.params.id
-    async.parallel({
-        user: (callback) => {
-            User.findById(id).populate('role').exec(callback)
-        },
-        roles: (callback) => {
-            Role.find().exec(callback)
-        }
-    }, (err, results) => {
-        if (err) { return next(err) }
-        // No errors - So render.
-        if (results.user) {
-            res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles })
-        } else {
-            req.flash("warning_msg", "User not found!")
-            res.redirect('/users')
-        }
-    })        
+    if (id !== req.user.id) {
+        async.parallel({
+            user: (callback) => {
+                User.findById(id).populate('role').exec(callback)
+            },
+            roles: (callback) => {
+                Role.find().exec(callback)
+            }
+        }, (err, results) => {
+            if (err) { return next(err) }
+            // No errors - So render.
+            if (results.user) {
+                res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles })
+            } else {
+                req.flash("warning_msg", "User not found!")
+                res.redirect('/users')
+            }
+        })   
+    } else {
+        req.flash('warning_msg', "You can't edit youre own account.")
+        res.redirect('/')
+    }    
 }
 // @route   POST - '/users/:id/edit'.
 // @desc    Handle user edit form.
@@ -199,73 +204,78 @@ exports.edit_user_post = [
 
     // Process request after validation and sanitization.
     (req, res, next) => {
-        const errors = validationResult(req)
         const id = req.params.id
-        if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/errors messages.
-            async.parallel({
-                user: (callback) => {
-                    User.findById(id).populate('role').exec(callback)
-                },
-                roles: (callback) => {
-                    Role.find().exec(callback)
+        if (id !== req.user.id) {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                // There are errors. Render form again with sanitized values/errors messages.
+                async.parallel({
+                    user: (callback) => {
+                        User.findById(id).populate('role').exec(callback)
+                    },
+                    roles: (callback) => {
+                        Role.find().exec(callback)
+                    }
+                }, (err, results) => {
+                    if (err) { return next(err) }
+                    res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles, errors: errors.array() })
+                    return
+                })
+            } else {
+                // There is no error. Data from form is valid.
+                let newUser = {
+                    username: req.body.username ,
+                    role: req.body.role
                 }
-            }, (err, results) => {
-                if (err) { return next(err) }
-                res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles, errors: errors.array() })
-                return
-            })
-        } else {
-            // There is no error. Data from form is valid.
-            let newUser = {
-                username: req.body.username ,
-                role: req.body.role
-            }
-            User.findById(id).exec((err, user) => {
-                if (newUser.username !== user.username) {
-                    // Check the User is exists.
-                    User.findOne({ username: newUser.username })
-                    .then(user => {
-                        if (user) {
-                            async.parallel({
-                                user: (callback) => {
-                                    User.findById(id).populate('role').exec(callback)
-                                },
-                                roles: (callback) => {
-                                    Role.find().exec(callback)
+                User.findById(id).exec((err, user) => {
+                    if (newUser.username !== user.username) {
+                        // Check the User is exists.
+                        User.findOne({ username: newUser.username })
+                        .then(user => {
+                            if (user) {
+                                async.parallel({
+                                    user: (callback) => {
+                                        User.findById(id).populate('role').exec(callback)
+                                    },
+                                    roles: (callback) => {
+                                        Role.find().exec(callback)
+                                    }
+                                }, (err, results) => {
+                                    if (err) { return next(err) }
+                                    errors.errors.push({
+                                        value: newUser.username,
+                                        msg: `Another user is using the <span class="text-primary">"${newUser.username}"</span> username.`,
+                                        param: 'username',
+                                        location: 'body'
+                                    })
+                                    res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles, errors: errors.array() })
+                                    return
+                                })    
+                            } else {
+                                // User not exists. So it's good to go!
+                                // Update the user.
+                                User.findByIdAndUpdate(req.params.id, newUser, {}, function (err, user) {
+                                    if (err) { return next(err); }
+                                    // Successful - redirect to user detail page.
+                                    res.redirect(user.url);
+                                    });
                                 }
-                            }, (err, results) => {
-                                if (err) { return next(err) }
-                                errors.errors.push({
-                                    value: newUser.username,
-                                    msg: `Another user is using the <span class="text-primary">"${newUser.username}"</span> username.`,
-                                    param: 'username',
-                                    location: 'body'
-                                })
-                                res.render('edit_user_form', { title: "Edit User", user: results.user, roles: results.roles, errors: errors.array() })
-                                return
-                            })    
-                        } else {
-                            // User not exists. So it's good to go!
-                            // Update the user.
-                            User.findByIdAndUpdate(req.params.id, newUser, {}, function (err, user) {
-                                if (err) { return next(err); }
-                                // Successful - redirect to user detail page.
-                                res.redirect(user.url);
-                                });
-                            }
-                    })
-                } else {
-                    User.findByIdAndUpdate(req.params.id, newUser, {}, function (err, user) {
-                        if (err) { return next(err); }
-                        // Successful - redirect to user detail page.
-                        req.flash("success_msg", "User's information has been updated successfully")
-                        res.redirect(user.url);
-                    });
-                }
-
-            })
-            
+                        })
+                    } else {
+                        User.findByIdAndUpdate(req.params.id, newUser, {}, function (err, user) {
+                            if (err) { return next(err); }
+                            // Successful - redirect to user detail page.
+                            req.flash("success_msg", "User's information has been updated successfully")
+                            res.redirect(user.url);
+                        });
+                    }
+    
+                })
+                
+            }
+        } else {
+            req.flash('warning_msg', "You can't edit youre own account.")
+            res.redirect('/')
         }
     }
 
@@ -275,31 +285,64 @@ exports.edit_user_post = [
 // @route   GET - '/users/:id/delete'.
 // @desc    Render user delete page.
 exports.delete_user_get = (req, res, next) => {
-    res.send("NOT IMPLEMENTED")
+    const id = req.params.id
+    if (id !== req.user.id) { 
+        User.findById(id).populate('role').exec((err, user) => {
+            if (err) { return next(err) }
+            // No errors. So render.
+            res.render('delete_user', { title: "Delete User", user: user })
+        })
+    } else {
+        req.flash('warning_msg', "You can't delete youre own account.")
+        res.redirect('/')
+    }
 }
 // @route   POST - '/users/:id/delete'.
 // @desc    Handle user delete form.
 exports.delete_user_post = (req, res, next) => {
-    // Do something..
+    const id = req.params.id
+    if (id !== req.user.id) {
+        User.findByIdAndRemove(id, (err) => {
+            if (err) { return next(err) }
+            // Success. Go to Books list.
+            res.redirect('/users')
+        })
+    } else {
+        req.flash('warning_msg', "You can't delete youre own account.")
+        res.redirect('/')
+    }
+    
 }
 
 // -----------------------------------------------
 // ======= USERS ROLE =======
 // -----------------------------------------------
 
-
 // @route   GET - '/users/roles'.
 // @desc    List all roles.
 exports.userRole_list = (req, res, next) => {
-    // TODO: Create this route.
-    res.send("NOT IMPLEMENTED")
+    Role.find().exec((err, roles) => {
+        res.render('roles_list', { title: "Roles List", roles: roles })
+    })
 }
 
 // @route   GET - '/users/role/:id'.
 // @desc    Render a detail page for specific role.
 exports.userRole_detail = (req, res, next) => {
-    // TODO: Create this route.
-    res.send("NOT IMPLEMENTED")
+    const id = req.params.id
+
+    async.parallel({
+        users: (callback) => {
+            User.find({ 'role': id }).populate('role').exec(callback)
+        },
+        role: (callback) => {
+            Role.findById(id).exec(callback)
+        }
+    }, (err, results) => {
+        if (err) { return next(err) }
+        // No errors. So render.
+        res.render("role_detail", {  title: "Role Detail", users: results.users, role: results.role })
+    })
 }
 
 

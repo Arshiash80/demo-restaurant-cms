@@ -17,21 +17,21 @@ exports.index = (req, res, next) => {
 
     async.parallel({
         users: (callback) => {
-            User.count().exec(callback)
+            User.countDocuments().exec(callback)
         },
         roles: (callback) => {
-            Role.count().exec(callback)
+            Role.countDocuments().exec(callback)
         },
         menuItems: (callback) => {
-            MenuItem.count().exec(callback)
+            MenuItem.countDocuments().exec(callback)
         },
         categories: (callback) => {
-            Category.count().exec(callback)
+            Category.countDocuments().exec(callback)
         },
     }, (err, results) => {
         if (err) { return next(err) }
         // No Errors. So render.
-        res.render('index', { users: results.users, roles: results.roles, categories: results.categories , menuItems: results.menuItems })
+        res.render('index', { users: results.users, roles: results.roles, categories: results.categories , menuItems: results.menuItems, user: req.user.username })
     })
 }
 

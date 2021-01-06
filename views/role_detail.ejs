@@ -12,14 +12,22 @@
                         <h5>Menu Permissions</h5>
                         <hr>
                         <% role.permissions.menu_permissions.forEach(permission => { %>
-                            <p><%- permission %> </p>
+                            <div class="card my-2">
+                                <div class="card-body">
+                                    <%- permission.toUpperCase() %>
+                                </div>
+                            </div>
                         <% }) %>
                     </div>
                     <div class="col-6">
                         <h5>User Permissions</h5>
                         <hr>
                         <% role.permissions.user_permissions.forEach(permission => { %>
-                            <p><%- permission %> </p>
+                            <div class="card my-2">
+                                <div class="card-body">
+                                    <%- permission.toUpperCase() %>
+                                </div>
+                            </div>
                         <% }) %>
                     </div>
                 </div>
@@ -35,7 +43,12 @@
                     <a href="/users/create" class="btn btn-primary my-3">Create Users For This Role</a>
                 <% } %>
                 <% users.forEach(user => { %>
-                    <p class="fw-bold"><a href=<%- user.url %>><%= user.username %></a></p>
+                    <div class="card my-2">
+                        <div class="card-body">
+                            <a href=<%- user.url %> class='fw-bold'><%= user.username %></a>
+                        </div>
+                    </div>
+                    
                 <% }) %>
             </div>
         </div>

@@ -2,6 +2,11 @@
     <h1><%= title %></h1>
     <hr>
     <div class="container-fluid">
+        <% if (roles) { %>
+            <p class="fs-5"><%- roles.length %> Roles found. </p>
+        <% } else {%> 
+            <p class="fs-5 text-danger">No Roles created.</p>     
+        <% } %>
         <div class="card">
             <ul class="list-group list-group-flush">
                 <% roles.forEach(role => { %>

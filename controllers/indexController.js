@@ -1,6 +1,5 @@
 const MenuItem = require('../models/contents/MenuItem')
 const Category = require('../models/contents/Category')
-
 const User = require('../models/users/User')
 const Role = require('../models/users/Role')
 
@@ -8,13 +7,32 @@ const async = require('async')
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 
+
 const passport = require('passport')
 
 
 // @route   GET - '/'.
 // @desc    Renders home page.
 exports.index = (req, res, next) => {
-    res.render('index', {});
+
+    async.parallel({
+        users: (callback) => {
+            User.count().exec(callback)
+        },
+        roles: (callback) => {
+            Role.count().exec(callback)
+        },
+        menuItems: (callback) => {
+            MenuItem.count().exec(callback)
+        },
+        categories: (callback) => {
+            Category.count().exec(callback)
+        },
+    }, (err, results) => {
+        if (err) { return next(err) }
+        // No Errors. So render.
+        res.render('index', { users: results.users, roles: results.roles, categories: results.categories , menuItems: results.menuItems })
+    })
 }
 
 

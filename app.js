@@ -30,7 +30,7 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, use
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(expressLayouts);
 app.set('layout', 'layouts/main_layout');
 
 app.use(logger('dev'));
@@ -39,7 +39,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Init express-ejs-layouts
-app.use(expressLayouts);
 // Express session
 app.use(session({
   secret: 'secret',
@@ -70,6 +69,7 @@ app.use(flash());
 // Global vars
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   res.locals.error_msg = req.flash('error_msg')
   res.locals.error = req.flash('error')
   next()

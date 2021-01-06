@@ -1,4 +1,6 @@
-<h1>ERROR PAGE :)</h1>
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<%- contentFor('content') %> 
+    <h1>Ooops! Something went wrong.</h1>   
+    <hr>
+    <%- include('./includes/errorMessage.ejs')%>
+    <h2><%= error.status %></h2>
+    <pre><%= error.stack %></pre>

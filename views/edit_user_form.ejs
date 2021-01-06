@@ -1,0 +1,31 @@
+<%- contentFor('content') %> 
+    <h1><%- title %> : -<%- user.username %> </h1>
+    <hr>
+    <form  action="" method="POST">
+        <div class="container-fluid">
+            <%- include('./includes/errorMessage.ejs')%>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value=<%- user.username %>  placeholder="Enter a username" required>
+                      </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Select a role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value=<%- user.role._id %>  selected><%- user.role.name %> </option>
+                            <% roles.forEach(role => { %>
+                                <option value=<%= role._id %> > <%= role.name %> </option>
+                            <% }) %> 
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary my-3">Update User Information</button>
+            <a href="#" class="btn btn-warning">Create A New Password For - <%- user.username %> </a>
+            <br>
+            <a href=<%- user.url %>  class="btn btn-primary my-3">Cancel</a>
+        </div>
+    </form>

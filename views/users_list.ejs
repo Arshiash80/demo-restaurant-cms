@@ -1,6 +1,7 @@
 <%- contentFor("content") %> 
     <h1>All Users</h1>
     <hr>
+    <%- include('./includes/errorMessage.ejs')%>
     <div class="container-fluid my-3">
         <div class="row">
             <div class="col-12 col-md-6">
@@ -30,18 +31,17 @@
       
     <% users.sort(function(a, b){return a - b}).forEach(user => { %>
         <div class="card mb-2">
-            <div class="card-header">
+            <div class="card-header fw-bold">
                 <%= user.role.name %>
               </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-12 col-md-6">
-                            <h5 class="card-title"><%= user.username %></h5>
+                            <a href="<%- user.url %>" class="card-title "><%= user.username %></a>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <a href=<%- user.url %> class="btn btn-primary">Detail</a>
-                            <a href="<%- user.url %>/edit" class="btn btn-primary">Edit</a>
+                        <div class="col-12 col-md-6 ms-auto">
+                            <a href="<%- user.url %>/edit" class="btn btn-primary ">Edit</a>
                             <a href="<%- user.url %>/delete" class="btn btn-danger">Delete</a>
                         </div>
                     </div>

@@ -7,16 +7,21 @@
 <% } %>
 <% if (success_msg != "") { %>
     <div class="alert alert-success" role="alert">
-        <%- success_msg %>
+        <span class='fw-bold'><%- success_msg %></span>
+    </div>
+<% } %>
+<% if (warning_msg != "") { %>
+    <div class="alert alert-warning" role="alert">
+        <span class='fw-bold'><%- warning_msg %></span>
     </div>
 <% } %>
 <% if (error_msg != "") { %>
     <div class="alert alert-danger" role="alert">
-        <%- error_msg %>
+        <span class='fw-bold'><%- error_msg %></span>
     </div>
 <% } %>
 <% if (error != "") { %>
     <div class="alert alert-danger" role="alert">
-        <%- error %>
+        <span class='fw-bold'><%- error %></span>
     </div>
 <% } %>

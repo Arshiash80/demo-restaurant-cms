@@ -22,14 +22,14 @@ router.get('/create', permit(null, "create"),esureAuthenticated,usersController.
 router.post('/create', permit(null, "create"),esureAuthenticated,usersController.create_user_post);
 
 
+// -GET- request to --> '/users/:id'
+router.get('/:id', esureAuthenticated,usersController.users_detail);
+
 // -GET- request to --> '/users/:id/edit'
 router.get('/:id/edit', permit(null, "update"),esureAuthenticated,usersController.edit_user_get);
 
 // -POST- request to --> '/users/:id/edit'
 router.post('/:id/edit', permit(null, "update"),esureAuthenticated,usersController.edit_user_post);
-
-// -GET- request to --> '/users/:id'
-router.get('/:id', esureAuthenticated,usersController.users_detail);
 
 // -GET- request to --> '/users/:id/delete'
 router.get('/:id/delete', permit(null, "delete"),esureAuthenticated,usersController.delete_user_get);

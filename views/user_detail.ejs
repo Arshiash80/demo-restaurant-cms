@@ -1,0 +1,32 @@
+<%- contentFor("content") %> 
+    <h1><%- title %> : -<span class="fst-italic"><%- user.username %></span></h1>
+    <hr>
+    <%- include('./includes/errorMessage.ejs')%>
+    <div class="container-md">
+        <div class="row">
+            <div class="col-12 my-3">
+                <h4>Role : <a href=<%- user.role.url %>> <%- user.role.name %> </a></h4>
+            </div>
+            <h4>Permissions : </h4>
+            <hr>
+            <div class="col-12 px-4">
+                <div class="row">
+                    <div class="col-md-6 my-3">
+                        <h5>Menu Permissions</h5>
+                        <hr>
+                        <%- user.role.permissions.menu_permissions %>
+                    </div>
+                    <div class="col-md-6 my-3">
+                        <h5>User Permissions</h5>
+                        <hr>
+                        <%- user.role.permissions.user_permissions %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid my-3">
+        <a href=<%- user.url + "/edit" %>  class="btn btn-primary my-3">Edit - <%- user.username %></a>
+        <a href=<%- user.url + "/delete" %>  class="btn btn-danger">Delete - <%- user.username %></a>
+        <br>
+    </div>  

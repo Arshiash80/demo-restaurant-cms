@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 const RoleSchema = new Schema({
     name: { type: String, required: true, unique: true },
     permissions: {
-        menu_permissions: [{ type: String, enum: ['create', 'delete', 'update', 'none'], required: true }],
-        user_permissions: [{ type: String, enum: ['create', 'delete', 'update', 'none'], required: true }]
+        menu_permissions: [{ type: String, enum: ['create', 'delete', 'update' ], required: true }],
+        user_permissions: [{ type: String, enum: ['create', 'delete', 'update' ], required: true }]
     }
 })
 RoleSchema

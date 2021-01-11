@@ -1,0 +1,98 @@
+<%- contentFor('content') %>
+    <h1><%= title %> : -<%= role.name %> </h1>
+    <hr>
+    <form  action="" method="POST">
+        <div class="container-fluid">
+            <%- include('./includes/errorMessage.ejs')%>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Role Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value=<%= role.name %> placeholder="Role Name" required>
+                      </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Select Menu Permissions</label>
+                        <div class="form-check">
+                            <!-- CREATE --------------------------------------------->
+                            <% if(role.permissions.menu_permissions.includes("create")) { %>
+                                <input class="form-check-input" type="checkbox" value="create" id="menuCreate" name="menuPermission[]" checked>
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="create" id="menuCreate" name="menuPermission[]">
+                            <% } %> 
+                            <label class="form-check-label" for="menuCreate">
+                              Create
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <!-- DELETE --------------------------------------------->
+                            <% if(role.permissions.menu_permissions.includes("delete")) { %>
+                                <input class="form-check-input" type="checkbox" value="delete" id="menuDelete" name="menuPermission[]" checked>
+
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="delete" id="menuDelete" name="menuPermission[]">
+
+                            <% } %> 
+                            <label class="form-check-label" for="menuDelete">
+                                Delete
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <!-- UPDATE --------------------------------------------->
+                            <% if(role.permissions.menu_permissions.includes("update")) { %>
+                                <input class="form-check-input" type="checkbox" value="update" id="menuUpdate" name="menuPermission[]" checked>
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="update" id="menuUpdate" name="menuPermission[]">
+                            <% } %> 
+                            <label class="form-check-label" for="menuUpdate">
+                                Update
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Select User Permissions</label>
+                        <div class="form-check">
+                            <!-- CREATE --------------------------------------------->
+                            <% if(role.permissions.user_permissions.includes("create")) { %>
+                                <input class="form-check-input" type="checkbox" value="create" id="userCreate" name="userPermission[]" checked>
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="create" id="userCreate" name="userPermission[]">
+                            <% } %> 
+                            <label class="form-check-label" for="userCreate">
+                              Create
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <!-- DELETE --------------------------------------------->
+                            <% if(role.permissions.user_permissions.includes("delete")) { %>
+                                <input class="form-check-input" type="checkbox" value="delete" id="userDelete" name="userPermission[]" checked>
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="delete" id="userDelete" name="userPermission[]">
+                            <% } %> 
+                            <label class="form-check-label" for="userDelete">
+                                Delete
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <!-- UPDATE --------------------------------------------->
+                            <% if(role.permissions.user_permissions.includes("update")) { %>
+                                <input class="form-check-input" type="checkbox" value="update" id="userUpdate" name="userPermission[]" checked>
+                            <% } else { %> 
+                                <input class="form-check-input" type="checkbox" value="update" id="userUpdate" name="userPermission[]">
+                            <% } %> 
+                            <label class="form-check-label" for="userUpdate">
+                                Update
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary">Update Role Details</button>
+            <a href=<%- role.url %>  type="submit" class="btn btn-warning">Cancel</a>
+        </div>
+    </form>

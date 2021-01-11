@@ -410,21 +410,178 @@ exports.create_userRole_post = [
 // @route   GET - '/users/role/:id/edit'.
 // @desc    Render role edit page.
 exports.edit_userRole_get = (req, res, next) => {
-    res.send("NOT IMPLEMENTED")
+    const id = req.params.id
+    if (id != req.user.role) {
+        async.parallel({
+            role_users: (callback) => {
+                User.find({ 'role': id }).exec(callback)
+            },
+            role: (callback) => {
+                Role.findById(id).exec(callback)
+            }
+        }, (err, results) => {
+            if (err) { return next(err) }
+            // No errors. So render.
+            res.render('edit_role_form', { title: "Edit Role", role_users: results.role_users, role: results.role })
+        })
+    } else {
+        req.flash('warning_msg', "You can't edit youre own role!")
+        res.redirect('/users/roles')
+    }
+    
 }
 // @route   POST - '/users/role/:id/edit'.
 // @desc    Handle role edit form.
-exports.edit_userRole_post = (req, res, next) => {
-    // Do something..
-}
+exports.edit_userRole_post = [
+    body('name')
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage("A name required for role!")
+        .isLength({ min: 3 })
+        .withMessage("Role name must be at least 3 characters.")
+        .isAlpha()
+        .withMessage('Role name must contains only letters.')
+        .escape(),
+
+    body('menuPermission')
+        .isArray()
+        .withMessage("You must mark at least one of the menu permissions."),
+
+    (req, res, next) => {
+        if (req.params.id != req.user.role) {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                // There are errors. Render form again with sanitized values/errors messages.
+                async.parallel({
+                    role_users: (callback) => {
+                        User.find({ 'role': req.params.id }).exec(callback)
+                    },
+                    role: (callback) => {
+                        Role.findById(req.params.id).exec(callback)
+                    }
+                }, (err, results) => {
+                    if (err) { return next(err) }
+                    // No errors. So render.
+                    res.render('edit_role_form', { title: "Edit Role", role_users: results.role_users, role: results.role, errors: errors.array() })
+                })
+            } else {
+                // Form data is valid.
+                Role.findById(req.params.id).exec((err, oldRole) => {
+                    if (err) { return next(err) }
+                    // No errors.
+                    let newRole = {
+                        // DATA FROM "edit_role_form" FORM.
+                        name: req.body.name,
+                        permissions: {
+                            menu_permissions: req.body.menuPermission || [],
+                            user_permissions: req.body.userPermission || []
+                        }
+                    }
+                    if (oldRole.name !== newRole.name) {
+                        Role.findOne({ 'name': newRole.name }).exec((err, role) => {
+                            if (err) { return next(err) }
+                            // No errors.
+                            if (role) {
+                                // This role name is exists. Rerender the page with error value.
+                                errors.errors.push({
+                                    value: newRole.name,
+                                    msg: `'${newRole.name}' Role name is already taken.`,
+                                    param: 'name',
+                                    location: 'body'
+                                })
+                                async.parallel({
+                                    role_users: (callback) => {
+                                        User.find({ 'role': req.params.id }).exec(callback)
+                                    },
+                                    role: (callback) => {
+                                        Role.findById(req.params.id).exec(callback)
+                                    }
+                                }, (err, results) => {
+                                    if (err) { return next(err) }
+                                    // No errors. So render.
+                                    res.render('edit_role_form', { title: "Edit Role", role_users: results.role_users, role: results.role, errors: errors.array() })
+                                })
+                            } else {
+                                // Role name is ok. So update the roles detail and redirect to role detail page.
+                                Role.findByIdAndUpdate(req.params.id, newRole, {}, function (err, role) {
+                                    if (err) { return next(err); }
+                                    // Successful - redirect to role detail page.
+                                    req.flash("success_msg", "Role's information has been updated successfully")
+                                    res.redirect(role.url);
+                                });
+                            }
+                        })
+                    } else {
+                        Role.findByIdAndUpdate(req.params.id, newRole, {}, function (err, role) {
+                            if (err) { return next(err); }
+                            // Successful - redirect to role detail page.
+                            req.flash("success_msg", "Role's information has been updated successfully")
+                            res.redirect(role.url);
+                        });
+                    }
+                })
+            }
+        } else {
+            req.flash('warnind_msg', "You can't edit youre own role!")
+            res.redirect('/users/roles')
+        }
+        
+    }
+]
 
 // @route   GET - '/users/role/:id/delete'.
 // @desc    Render role delete page.
 exports.delete_userRole_get = (req, res, next) => {
-    res.send("NOT IMPLEMENTED")
+    const id = req.params.id
+    if (id != req.user.role) { 
+        async.parallel({
+            users: (callback) =>{
+                User.find({ 'role': id }).exec(callback)
+            },
+            role: (callback) => {
+                Role.findById(id).exec(callback)
+            }
+        }, (err, results) => {
+            if (err) { return next(err) }
+            // No errors.
+            res.render('delete_role', { title: "Delete Role", role: results.role, users: results.users })
+        })
+        
+    } else {
+        req.flash('warning_msg', "You can't delete youre own role!")
+        res.redirect('/users/roles')
+    }
 }
 // @route   POST - '/users/role/:id/delete'.
 // @desc    Handle role delete form.
 exports.delete_userRole_post = (req, res, next) => {
-    // Do something..
+    const id = req.params.id
+    if (id != req.user.role) { 
+        async.parallel({
+            users: (callback) => {
+                User.find({ 'role': id }).exec(callback)
+            },
+            role: (callback) => {
+                Role.findById(id).exec(callback)
+            } 
+        }, (err, results) => {
+            if (err) { return next(err) }
+            // No erros.
+            Role.findByIdAndRemove(results.role.id, (err, role) => {
+                if (err) return next(err)
+                results.users.forEach(user => {
+                    User.findByIdAndRemove(user.id, err => {
+                        if (err) return next(err)
+                    })
+                })
+                req.flash("success_msg", `Role named: "${role.name}" was delted successfuly including the users who used it.`)
+                res.redirect('/users/roles')
+            })
+            
+        })
+        
+    } else {
+        req.flash('warning_msg', "You can't delete youre own role!")
+        res.redirect('/users/roles')
+    }
 }

@@ -1,0 +1,65 @@
+<%- contentFor('content') %> 
+    <h1><%= title %> : -<%- role.name %> </h1>
+    <hr>
+    <div class="alert alert-danger" role="alert">
+        <h4>Yo are about to delete -<span class="text-danger fw-bold"><%- role.name %></span> role!!</h4>
+        <h4 class="fw-bold text-danger">WITH THIS ROLE, USERS WHO USE IT WILL BE DELETED!</h4>
+        <div class="card mb-2 my-4">
+            <div class="card-header fw-bold">
+                <%= role.name %>
+              </div>
+            <div class="card-body bg-warning">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Menu Permissions</h5>
+                            <hr>
+                            <% role.permissions.menu_permissions.forEach(permission => { %>
+                                <div class="card my-2">
+                                    <div class="card-body">
+                                        <%- permission.toUpperCase() %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <div class="col-6">
+                            <h5>User Permissions</h5>
+                            <hr>
+                            <% role.permissions.user_permissions.forEach(permission => { %>
+                                <div class="card my-2">
+                                    <div class="card-body">
+                                        <%- permission.toUpperCase() %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 col-12">
+                            <h4 class="fw-bold text-danger mt-3 text-center">Users with role <%= role.name %> </h4>
+                            <hr>
+                            <% if (!users.length) { %>
+                                <div class="alert alert-warning" role="alert">
+                                    <span class='fw-bold'>No users assigned to this role.</span>
+                                </div>
+                            <% } %>
+                            <% users.forEach(user => { %>
+                                <div class="card my-2">
+                                    <div class="card-body">
+                                        <a href=<%- user.url %> class='fw-bold'><%= user.username %></a>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+
+        <p class="my-4 fw-bold">Are you sure about that ?</p>
+        <form action="" method="POST">
+            <button class="btn btn-danger" type="submit">Delete - <%- role.name %> </button>
+            <a href= <%- role.url %> class="btn btn-primary">Cancel</a>
+        </form>
+    </div>
